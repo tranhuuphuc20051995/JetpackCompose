@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Model
@@ -9,6 +10,7 @@ import androidx.ui.core.setContent
 import androidx.ui.foundation.VerticalScroller
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.vector.DrawVector
+import androidx.ui.layout.Column
 import androidx.ui.layout.LayoutPadding
 import androidx.ui.material.BottomAppBar
 import androidx.ui.material.Button
@@ -16,6 +18,7 @@ import androidx.ui.material.FloatingActionButton
 import androidx.ui.material.Scaffold
 import androidx.ui.res.vectorResource
 import androidx.ui.unit.dp
+import com.example.myapplication.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: BlankViewModel
@@ -23,9 +26,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(BlankViewModel::class.java)
-
+        viewModel.model = ModelStateComposer()
         setContent {
-            viewModel.model = ModelStateComposer()
             Scaffold(
                 topAppBar = {
 
@@ -33,14 +35,16 @@ class MainActivity : AppCompatActivity() {
 
                 bodyContent = {
                     VerticalScroller() {
-                        Button(
-                            onClick = onEventClick(),
-                            elevation = 4.dp,
-                            modifier = LayoutPadding(all = 10.dp)
-                        ) {
-                            Text(text = viewModel.model.textState)
+                        Column {
+                            Button(
+                                onClick = onEventClick(),
+                                elevation = 4.dp,
+                                modifier = LayoutPadding(all = 10.dp)
+                            ) {
+                                Text(text = viewModel.model.textState)
+                            }
+                            JCButton()
                         }
-                        JCButton()
                     }
                 },
 
@@ -71,10 +75,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onEventClick(): () -> Unit = {
-        viewModel.setValue("Cái éo nhé!")
-        setContent {
-            JCButton()
-        }
+        startActivity(Intent(this, LoginActivity::class.java))
     }
 }
 
